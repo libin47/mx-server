@@ -9,7 +9,7 @@ module.exports = {
   apps: [
     {
       name: 'mx-server',
-      script: 'index.js',
+      script: 'dist/src/main.js',
       autorestart: true,
       exec_mode: 'cluster',
       watch: false,

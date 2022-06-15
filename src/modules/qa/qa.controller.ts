@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -13,16 +12,12 @@ import {
   Put,
   Query,
 } from '@nestjs/common'
-import { ApiQuery } from '@nestjs/swagger'
-import { Types } from 'mongoose'
 import { Auth } from '~/common/decorator/auth.decorator'
 import { ApiName } from '~/common/decorator/openapi.decorator'
 import { IsMaster } from '~/common/decorator/role.decorator'
 import { CannotFindException } from '~/common/exceptions/cant-find.exception'
 import { MongoIdDto } from '~/shared/dto/id.dto'
-import { addConditionToSeeHideContent, addConditionCanSee } from '~/utils/query.util'
-import { Paginator } from '~/common/decorator/http.decorator'
-import { VisitDocument } from '~/common/decorator/update-count.decorator'
+import { addConditionCanSee } from '~/utils/query.util'
 import {
   QAModel,
   AnswerModel,

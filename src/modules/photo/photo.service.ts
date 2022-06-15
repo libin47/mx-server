@@ -1,4 +1,4 @@
-import {
+import { 
   BadRequestException,
   forwardRef,
   Inject,
@@ -8,9 +8,9 @@ import { EventEmitter2 } from '@nestjs/event-emitter'
 import { isDefined } from 'class-validator'
 import { omit } from 'lodash'
 import { FilterQuery, PaginateOptions } from 'mongoose'
-import { InjectModel } from 'nestjs-typegoose'
-import { EventBusEvents } from '~/constants/event.constant'
-import { EventTypes } from '~/processors/gateway/events.types'
+import { InjectModel } from '~/transformers/model.transformer'
+import { EventBusEvents } from '~/constants/event-bus.constant'
+import { BusinessEvents as EventTypes } from '~/constants/business-event.constant'
 import { WebEventsGateway } from '~/processors/gateway/web/events.gateway'
 import { ImageService } from '~/processors/helper/helper.image.service'
 import { AlbumService } from '../album/album.service'
@@ -24,7 +24,6 @@ export class PhotoService {
     private readonly photoModel: MongooseModel<PhotoModel>,
     @InjectModel(CommentModel)
     private readonly commentModel: MongooseModel<CommentModel>,
-
     @Inject(forwardRef(() => AlbumService))
     private albumService: AlbumService,
     private readonly webgateway: WebEventsGateway,

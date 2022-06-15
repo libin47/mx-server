@@ -1,10 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common'
-import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
-import { omit } from 'lodash'
-import { FilterQuery } from 'mongoose'
-import { InjectModel } from 'nestjs-typegoose'
-import { CannotFindException } from '~/common/exceptions/cant-find.exception'
-import { PhotoModel } from '../photo/photo.model'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { InjectModel } from '~/transformers/model.transformer'
 import { PhotoService } from '../photo/photo.service'
 import { AlbumModel } from './album.model'
 

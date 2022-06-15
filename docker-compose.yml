@@ -41,7 +41,7 @@ services:
     networks:
       - app-network
     restart: always
-     
+
 networks:
   app-network:
     driver: bridge

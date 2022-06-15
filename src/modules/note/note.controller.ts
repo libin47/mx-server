@@ -36,6 +36,7 @@ import {
   NidType,
   NotePasswordQueryDto,
   NoteQueryDto,
+  QAQueryDto,
 } from './note.dto'
 import { NoteModel, PartialNoteModel } from './note.model'
 import { NoteService } from './note.service'
@@ -53,15 +54,34 @@ export class NoteController {
   @Get('/latest')
   @ApiOperation({ summary: '获取最新发布一篇记录' })
   @VisitDocument('Note')
-  async getLatestOne(@IsMaster() isMaster: boolean) {
+  async getLatestOne(@IsMaster() isMaster: boolean, @Query() query: QAQueryDto,) {
+    const { answer } = query
     const { latest, next } = await this.noteService.getLatestOne(
       {
         ...addHidePasswordAndHideCondition(isMaster),
       },
       isMaster ? '+location +coordinates' : '-location -coordinates',
     )
-
-    return { data: latest, next }
+    const QANice = await this.noteService.checkQAOK(latest, answer)
+    if (
+      !QANice &&
+      !isMaster
+    ) {
+      if(!answer){
+        latest.text = ''
+        latest["statcode"] = -1
+        latest["stat"] = "Need answer the question"
+      }
+      else{
+        latest.text = ''
+        latest["statcode"] = -2
+        latest["stat"] = "Answer error"
+      }
+    }
+    else{
+      latest["statcode"] = 0
+    }
+    return { data: latest, next: next }
   }
 
   @Get('/')
@@ -85,9 +105,12 @@ export class NoteController {
 
   @Get(':id')
   @Auth()
-  async getOneNote(@Param() params: MongoIdDto) {
+  async getOneNote(
+    @Param() params: MongoIdDto,
+    @Query() query: QAQueryDto,
+  ) {
     const { id } = params
-
+    const { answer } = query
     const current = await this.noteService.model
       .findOne({
         _id: id,
@@ -97,8 +120,48 @@ export class NoteController {
     if (!current) {
       throw new CannotFindException()
     }
+    const QANice = await this.noteService.checkQAOK(current, answer)
+    if (!QANice) {
+      if(!answer){
+        current.text = ''
+        current["statcode"] = -1
+        current["stat"] = "Need answer the question"
+      }
+      else{
+        current.text = ''
+        current["statcode"] = -2
+        current["stat"] = "Answer error"
+      }
+    }
+    else{
+      current["statcode"] = 0
+    }
 
     return current
+//     const select = '_id title nid id created modified'
+//     const passwordCondition = addConditionToSeeHideContent(isMaster)
+//     const prev = await this.noteService.model
+//       .findOne({
+//         ...passwordCondition,
+//         created: {
+//           $gt: current.created,
+//         },
+//       })
+//       .sort({ created: 1 })
+//       .select(select)
+//       .lean()
+//     const next = await this.noteService.model
+//       .findOne({
+//         ...passwordCondition,
+//         created: {
+//           $lt: current.created,
+//         },
+//       })
+//       .sort({ created: -1 })
+//       .select(select)
+//       .lean()
+//     delete current.password
+//     return { data: current, next, prev }
   }
 
   @Get('/list/:id')
@@ -220,90 +283,26 @@ export class NoteController {
   async getNoteByNid(
     @Param() params: NidType,
     @IsMaster() isMaster: boolean,
-    @Query() query: NotePasswordQueryDto,
+    @Query() query: QAQueryDto,
+    @Query('single') isSingle?: boolean,
   ) {
-    const { nid } = params
-    const { password, single: isSingle } = query
-    const condition = isMaster ? {} : { hide: false }
-    const current = await this.noteService.model
-      .findOne({
-        nid,
-        ...condition,
-      })
-      .select(`+password ${isMaster ? '+location +coordinates' : ''}`)
-      .lean({ getters: true })
-    if (!current) {
+    const id = await this.noteService.getIdByNid(params.nid)
+    if (!id) {
       throw new CannotFindException()
     }
-
-    current.text = await this.macrosService.replaceTextMacro(
-      current.text,
-      current,
-    )
-    if (
-      !this.noteService.checkPasswordToAccess(current, password) &&
-      !isMaster
-    ) {
-      throw new ForbiddenException('不要偷看人家的小心思啦~')
-    }
-    if (isSingle) {
-      return current
-    }
-
-    const select = '_id title nid id created modified'
-
-    const prev = await this.noteService.model
-      .findOne({
-        ...condition,
-        created: {
-          $gt: current.created,
-        },
-      })
-      .sort({ created: 1 })
-      .select(select)
-      .lean()
-    const next = await this.noteService.model
-      .findOne({
-        ...condition,
-        created: {
-          $lt: current.created,
-        },
-      })
-      .sort({ created: -1 })
-      .select(select)
-      .lean()
-    delete current.password
-    return { data: current, next, prev }
+    return await this.getOneNote({ id }, query)
   }
 
-  @Get('/topics/:id')
-  @HTTPDecorators.Paginator
-  async getNotesByTopic(
-    @Param() params: MongoIdDto,
-    @Query() query: PagerDto,
-    @IsMaster() isMaster: boolean,
-  ) {
-    const { id } = params
-    const {
-      size,
-      page,
-      select = '_id title nid id created modified',
-      sortBy,
-      sortOrder,
-    } = query
-    const condition: FilterQuery<NoteModel> = isMaster
-      ? { $or: [{ hide: false }, { hide: true }] }
-      : { hide: false }
-
-    return await this.noteService.getNotePaginationByTopicId(
+  @ApiOperation({ summary: '根据 nid 修改' })
+  @Put('/nid/:nid')
+  @Auth()
+  async modifyNoteByNid(@Param() params: NidType, @Body() body: NoteModel) {
+    const id = await this.noteService.getIdByNid(params.nid)
+    if (!id) {
+      throw new CannotFindException()
+    }
+    return await this.modify(body, {
       id,
-      {
-        page,
-        limit: size,
-        select,
-        sort: sortBy ? { [sortBy]: sortOrder } : undefined,
-      },
-      { ...condition },
-    )
+    })
   }
 }

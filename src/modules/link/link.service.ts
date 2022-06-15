@@ -159,7 +159,7 @@ export class LinkService {
           : `嘿!~, 主人已通过你的友链申请!~`,
       text:
         template === LinkApplyEmailType.ToMaster
-          ? `来自 ${model.name} 的友链请求: 
+          ? `来自 ${model.name} 的友链请求:
           站点标题: ${model.name}
           站点网站: ${model.url}
           站点描述: ${model.description}

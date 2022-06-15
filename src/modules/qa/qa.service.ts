@@ -1,16 +1,13 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common'
-import { DocumentType, ReturnModelType } from '@typegoose/typegoose'
-import { omit } from 'lodash'
-import { FilterQuery } from 'mongoose'
-import { InjectModel } from 'nestjs-typegoose'
+import { Injectable, Inject, forwardRef } from '@nestjs/common'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { InjectModel } from '~/transformers/model.transformer'
 import { CannotFindException } from '~/common/exceptions/cant-find.exception'
 import { QAModel } from './qa.model'
 
-@Injectable()
+@Injectable() 
 export class QAService {
   constructor(
-    @InjectModel(QAModel)
-    private readonly qaModel: ReturnModelType<typeof QAModel>,
+    @InjectModel(QAModel) private readonly qaModel: MongooseModel<QAModel>
   ) {
     this.createDefaultQA()
   }

@@ -1,5 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common'
 import { AlbumModule } from '../album/album.module'
+
 import { PhotoController } from './photo.controller'
 import { PhotoService } from './photo.service'
 

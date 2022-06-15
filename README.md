@@ -1,3 +1,7 @@
+此基于作者的v3.18.11进行改动
+作者项目地址https://github.com/mx-space/mx-server
+
+
 # Mix Space Core
 
 [![GitHub stars](https://img.shields.io/github/stars/mx-space/mx-server.svg?style=flat)](https://github.com/mx-space/mx-server/stargazers)

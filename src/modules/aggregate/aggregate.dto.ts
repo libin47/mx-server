@@ -13,6 +13,7 @@ export class TopQueryDto {
 export enum TimelineType {
   Post,
   Note,
+  Photo,
 }
 
 export class TimelineQueryDto {

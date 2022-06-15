@@ -67,6 +67,14 @@ export class NoteModel extends WriteBaseModel {
   @Transform(({ value: val }) => (String(val).length === 0 ? null : val))
   password?: string
 
+  @prop({default: false,})
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  @Transform(({ value: val }) => (String(val).length === 0 ? null : val))
+  qa?: string
+
+
   @prop()
   @IsOptional()
   @IsDate()

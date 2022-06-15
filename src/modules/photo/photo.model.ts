@@ -3,14 +3,12 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
 import { index, modelOptions, prop, Ref, Severity } 
 from '@typegoose/typegoose'
 import {
-  ArrayUnique,
   IsBoolean,
   IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator'
-import { Query } from 'mongoose'
 import {
   CountMixed as Count,
   PhotoBaseModel,
@@ -18,7 +16,6 @@ import {
 import { Paginator } from '~/shared/interface/paginator.interface'
 import {
   AlbumModel as Album,
-  AlbumModel,
 } from '../album/album.model'
 
 

@@ -1,15 +1,15 @@
 import { PartialType } from '@nestjs/mapped-types'
-import { DocumentType, index, modelOptions, prop } from '@typegoose/typegoose'
+import { DocumentType, index, modelOptions, prop, Severity } from '@typegoose/typegoose'
 import { IsNotEmpty, IsString } from 'class-validator'
 import { BaseModel } from '~/shared/model/base.model'
 import { IsMongoId } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
-export type QADocument = DocumentType<QAModel>
+// export type QADocument = DocumentType<QAModel>
 
 
 
-@modelOptions({ options: { customName: 'QA' } })
+@modelOptions({ options: { customName: 'QA', allowMixed: Severity.ALLOW }  })
 export class QAModel extends BaseModel {
   @prop({ unique: true, trim: true, required: true })
   @IsString()

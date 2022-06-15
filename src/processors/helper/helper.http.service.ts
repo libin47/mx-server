@@ -104,7 +104,7 @@ export class HttpService {
       this.logger.log(
         `HTTP Request: [${req.method?.toUpperCase()}] ${req.baseURL || ''}${
           req.url
-        } 
+        }
 params: ${this.prettyStringify(req.params)}
 data: ${this.prettyStringify(req.data)}`,
       )

@@ -17,6 +17,7 @@ import { AnalyzeModule } from './modules/analyze/analyze.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { BackupModule } from './modules/backup/backup.module'
 import { CategoryModule } from './modules/category/category.module'
+import { AlbumModule } from './modules/album/album.module'
 import { CommentModule } from './modules/comment/comment.module'
 import { ConfigsModule } from './modules/configs/configs.module'
 import { DebugModule } from './modules/debug/debug.module'
@@ -32,6 +33,7 @@ import { OptionModule } from './modules/option/option.module'
 import { PageModule } from './modules/page/page.module'
 import { PageProxyModule } from './modules/pageproxy/pageproxy.module'
 import { PostModule } from './modules/post/post.module'
+import { PhotoModule } from './modules/photo/photo.module'
 import { ProjectModule } from './modules/project/project.module'
 import { PTYModule } from './modules/pty/pty.module'
 import { RecentlyModule } from './modules/recently/recently.module'
@@ -49,6 +51,7 @@ import { GatewayModule } from './processors/gateway/gateway.module'
 import { HelperModule } from './processors/helper/helper.module'
 import { LoggerModule } from './processors/logger/logger.module'
 
+
 @Module({
   imports: [
     LoggerModule,
@@ -60,6 +63,7 @@ import { LoggerModule } from './processors/logger/logger.module'
     AuthModule,
     BackupModule,
     CategoryModule,
+    AlbumModule,
     CommentModule,
     ConfigsModule,
     isInDemoMode && DemoModule,
@@ -73,6 +77,7 @@ import { LoggerModule } from './processors/logger/logger.module'
     OptionModule,
     PageModule,
     PostModule,
+    PhotoModule,
     ProjectModule,
     PTYModule,
     RecentlyModule,
@@ -84,7 +89,8 @@ import { LoggerModule } from './processors/logger/logger.module'
     SnippetModule,
     ToolModule,
     UserModule,
-
+    
+    
     PageProxyModule,
 
     GatewayModule,

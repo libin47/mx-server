@@ -16,14 +16,19 @@ export const CROSS_DOMAIN = {
   allowedOrigins: argv.allowed_origins
     ? argv.allowed_origins?.split?.(',')
     : [
-        'innei.ren',
-        'shizuri.net',
-        'localhost',
-        '127.0.0.1',
-        'mbp.cc',
-        'local.innei.test',
-        '22333322.xyz',
-        '.*dev',
+      'localhost:9528',
+      'localhost:9529',
+      'localhost:2323',
+      'localhost:2333',
+      '127.0.0.1:2323',
+      '127.0.0.1:2333',
+      '127.0.0.1:9528',
+      '127.0.0.1:9529',
+      '119.91.218.90:9529',
+      '119.91.218.90:9528',
+      'wind-watcher.cn',
+      'www.wind-watcher.cn',
+      'server.wind-watcher.cn',
       ],
 
   // allowedReferer: 'innei.ren',

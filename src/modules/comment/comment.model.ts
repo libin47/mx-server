@@ -16,6 +16,7 @@ import { getAvatar } from '~/utils'
 import { NoteModel } from '../note/note.model'
 import { PageModel } from '../page/page.model'
 import { PostModel } from '../post/post.model'
+import { PhotoModel } from '../photo/photo.model'
 
 function autoPopulateSubs(
   this: Query<
@@ -51,7 +52,7 @@ export enum CommentState {
 })
 export class CommentModel extends BaseModel {
   @prop({ refPath: 'refType' })
-  ref: Ref<PostModel | NoteModel | PageModel>
+  ref: Ref<PostModel | NoteModel | PageModel | PhotoModel>
 
   @prop({ required: true, default: 'Post', enum: CommentRefTypes })
   refType: CommentRefTypes
@@ -110,6 +111,14 @@ export class CommentModel extends BaseModel {
     justOne: true,
   })
   public note: Ref<NoteModel>
+
+  @prop({
+    ref: () => PhotoModel,
+    foreignField: '_id',
+    localField: 'ref',
+    justOne: true,
+  })
+  public photo: Ref<PhotoModel>
 
   @prop({
     ref: () => PageModel,

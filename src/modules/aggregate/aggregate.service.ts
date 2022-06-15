@@ -25,6 +25,8 @@ import { LinkState } from '../link/link.model'
 import { LinkService } from '../link/link.service'
 import { NoteModel } from '../note/note.model'
 import { NoteService } from '../note/note.service'
+import { AlbumService } from '../album/album.service'
+import { PhotoService } from '../photo/photo.service'
 import { PageService } from '../page/page.service'
 import { PostService } from '../post/post.service'
 import { RecentlyService } from '../recently/recently.service'
@@ -39,6 +41,12 @@ export class AggregateService {
     private readonly postService: PostService,
     @Inject(forwardRef(() => NoteService))
     private readonly noteService: NoteService,
+
+    @Inject(forwardRef(() => AlbumService))
+    private readonly albumService: AlbumService,
+    
+    @Inject(forwardRef(() => PhotoService))
+    private readonly photoService: PhotoService,
 
     @Inject(forwardRef(() => CategoryService))
     private readonly categoryService: CategoryService,
@@ -65,6 +73,10 @@ export class AggregateService {
     return this.categoryService.findAllCategory()
   }
 
+  getAllAlbum(){
+    return this.albumService.findAllAlbum()
+  }
+
   getAllPages() {
     return this.pageService.model
       .find({}, 'title _id slug order')
@@ -87,11 +99,11 @@ export class AggregateService {
       .find(condition)
       .sort({ created: -1 })
       .limit(size)
-      .select('_id title name slug avatar nid created')
+      .select('_id title name slug avatar nid created photos')
   }
 
   async topActivity(size = 6, isMaster = false) {
-    const [notes, posts, says] = await Promise.all([
+    const [notes, photos, posts, says] = await Promise.all([
       this.findTop(
         this.noteService.model,
         !isMaster
@@ -102,6 +114,25 @@ export class AggregateService {
           : {},
         size,
       ).lean(),
+
+      this.findTop(
+        this.photoService.model,
+        !isMaster
+          ? {
+              hide: false,
+              password: undefined,
+            }
+          : {},
+        size,
+      )
+      .populate('albumId')
+      .lean()
+      .then((res) => {
+        return res.map((photo) => {
+          photo.album = pick(photo.albumId, ['name', 'slug'])
+          delete photo.albumId
+          return photo
+        })}),
 
       this.findTop(
         this.postService.model,
@@ -121,7 +152,7 @@ export class AggregateService {
       this.sayService.model.find({}).sort({ create: -1 }).limit(size),
     ])
 
-    return { notes, posts, says }
+    return { notes, photos, posts, says }
   }
 
   async getTimeline(
@@ -163,6 +194,18 @@ export class AggregateService {
         .sort({ created: sortBy })
         .lean()
 
+    const getPhotos = () =>
+    this.photoService.model
+      .find(
+        {
+          hide: false,
+          ...addYearCondition(year),
+        },
+        '_id nid title weather mood created modified hasMemory',
+      )
+      .sort({ created: sortBy })
+      .lean()
+
     switch (type) {
       case TimelineType.Post: {
         data.posts = await getPosts()
@@ -170,6 +213,10 @@ export class AggregateService {
       }
       case TimelineType.Note: {
         data.notes = await getNotes()
+        break
+      }
+      case TimelineType.Photo: {
+        data.photos = await getPhotos()
         break
       }
       default: {
@@ -326,6 +373,8 @@ export class AggregateService {
       online,
       posts,
       notes,
+      albums,
+      photos,
       pages,
       says,
       comments,
@@ -339,6 +388,8 @@ export class AggregateService {
       this.gateway.getcurrentClientCount(),
       this.postService.model.countDocuments(),
       this.noteService.model.countDocuments(),
+      this.albumService.model.countDocuments({}),
+      this.photoService.model.countDocuments(),
       this.categoryService.model.countDocuments(),
       this.sayService.model.countDocuments(),
       this.commentService.model.countDocuments({
@@ -358,6 +409,7 @@ export class AggregateService {
         state: LinkState.Audit,
       }),
       this.categoryService.model.countDocuments({}),
+      this.albumService.model.countDocuments({}),
       this.recentlyService.model.countDocuments({}),
     ])
 
@@ -372,12 +424,14 @@ export class AggregateService {
     return {
       allComments,
       categories,
+      albums,
       comments,
       linkApply,
       links,
       notes,
       pages,
       posts,
+      photos,
       says,
       recently,
       unreadComments,

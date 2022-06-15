@@ -32,14 +32,15 @@ export class NotePasswordQueryDto {
   @IsOptional()
   @IsNotEmpty()
   password?: string
-
-  @IsBoolean()
-  @IsOptional()
-  @Transform(({ value }) => {
-    return value === '1' || value === 'true' || value === true || value === 1
-  })
-  single?: boolean
 }
+
+export class QAQueryDto {
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  answer?: string
+}
+
 
 export class ListQueryDto {
   @IsNumber()

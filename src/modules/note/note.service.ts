@@ -16,6 +16,7 @@ import { deleteKeys } from '~/utils'
 import { CommentRefTypes } from '../comment/comment.model'
 import { CommentService } from '../comment/comment.service'
 import { NoteModel } from './note.model'
+import { QAService } from '../qa//qa.service'
 
 @Injectable()
 export class NoteService {
@@ -28,6 +29,7 @@ export class NoteService {
     private readonly commentService: CommentService,
 
     private readonly textMacrosService: TextMacroService,
+    private readonly qaService: QAService,
   ) {
     this.needCreateDefult()
   }
@@ -91,6 +93,17 @@ export class NoteService {
     }
     const isValid = Object.is(password, doc.password)
     return isValid
+  }
+
+  checkQAOK<T extends NoteModel>(doc: T, answer?:string){
+    const qaid = doc.qa
+    if (!qaid){
+      return true
+    }
+    if (!answer){
+      return false
+    }
+    return this.qaService.checkAnswer(qaid, answer)
   }
 
   public async create(document: NoteModel) {
