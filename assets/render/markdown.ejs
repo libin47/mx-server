@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="referrer" content="no-referrer" />
+    <style>
+      <%-style.join('\n') %>
+    </style>
+    <%- link.join('\n') %>
+    <style>
+      code[class*='language-'],
+      pre[class*='language-'] {
+        font-size: 14px;
+      }
+    </style>
+    <title><%= title %></title>
+  </head>
+
+  <body class="markdown-body line-numbers" id="write">
+    <%- body.join('\n') %>
+  </body>
+
+  <% if(typeof footer !== 'undefined') { %>
+  <footer style="text-align: right; padding: 2em 0; font-size: 0.8em">
+    <%- footer %>
+  </footer>
+  <% } %> <%- extraScripts.join('\n') %>
+  <script>
+    <%- script.join('\n') %>
+  </script>
+</html>
