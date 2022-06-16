@@ -63,6 +63,7 @@ export class CommentModel extends BaseModel {
   @prop({ trim: true })
   mail: string
 
+
   @prop({
     trim: true,
     set(val) {
@@ -132,7 +133,15 @@ export class CommentModel extends BaseModel {
   @prop()
   public location?: string
 
+  @prop()
+  avatars?: string
+
   public get avatar() {
-    return getAvatar(this.mail)
+    if (!this.avatars){
+      return getAvatar(this.mail)
+    }
+    else{
+      return this.avatars
+    }
   }
 }

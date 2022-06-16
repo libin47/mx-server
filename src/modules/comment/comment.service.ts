@@ -129,6 +129,7 @@ export class CommentService {
     }
     const commentIndex = ref.commentsIndex || 0
     doc.key = `#${commentIndex + 1}`
+    console.log(doc)
     const comment = await this.commentModel.create({
       ...doc,
       ref: new Types.ObjectId(id),

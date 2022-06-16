@@ -104,7 +104,6 @@ export class NoteController {
   }
 
   @Get(':id')
-  @Auth()
   async getOneNote(
     @Param() params: MongoIdDto,
     @Query() query: QAQueryDto,
@@ -137,31 +136,28 @@ export class NoteController {
       current["statcode"] = 0
     }
 
-    return current
-//     const select = '_id title nid id created modified'
-//     const passwordCondition = addConditionToSeeHideContent(isMaster)
-//     const prev = await this.noteService.model
-//       .findOne({
-//         ...passwordCondition,
-//         created: {
-//           $gt: current.created,
-//         },
-//       })
-//       .sort({ created: 1 })
-//       .select(select)
-//       .lean()
-//     const next = await this.noteService.model
-//       .findOne({
-//         ...passwordCondition,
-//         created: {
-//           $lt: current.created,
-//         },
-//       })
-//       .sort({ created: -1 })
-//       .select(select)
-//       .lean()
-//     delete current.password
-//     return { data: current, next, prev }
+    // return current
+    const select = '_id title nid id created modified'
+    const prev = await this.noteService.model
+      .findOne({
+        created: {
+          $gt: current.created,
+        },
+      })
+      .sort({ created: 1 })
+      .select(select)
+      .lean()
+    const next = await this.noteService.model
+      .findOne({
+        created: {
+          $lt: current.created,
+        },
+      })
+      .sort({ created: -1 })
+      .select(select)
+      .lean()
+    delete current.password
+    return { data: current, next, prev }
   }
 
   @Get('/list/:id')
@@ -304,5 +300,37 @@ export class NoteController {
     return await this.modify(body, {
       id,
     })
+  }
+
+
+  @Get('/topics/:id')
+  @HTTPDecorators.Paginator
+  async getNotesByTopic(
+    @Param() params: MongoIdDto,
+    @Query() query: PagerDto,
+    @IsMaster() isMaster: boolean,
+  ) {
+    const { id } = params
+    const {
+      size,
+      page,
+      select = '_id title nid id created modified',
+      sortBy,
+      sortOrder,
+    } = query
+    const condition: FilterQuery<NoteModel> = isMaster
+      ? { $or: [{ hide: false }, { hide: true }] }
+      : { hide: false }
+
+    return await this.noteService.getNotePaginationByTopicId(
+      id,
+      {
+        page,
+        limit: size,
+        select,
+        sort: sortBy ? { [sortBy]: sortOrder } : undefined,
+      },
+      { ...condition },
+    )
   }
 }

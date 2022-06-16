@@ -39,6 +39,13 @@ export class CommentDto {
   @ApiProperty({ example: 'http://example.com' })
   @MaxLength(50, { message: '地址不得大于 50 个字符' })
   url?: string
+
+  @IsString()
+  @IsUrl({ require_protocol: true }, { message: '请更正为正确的图像网址' })
+  @IsOptional()
+  @ApiProperty({ example: 'https://image.wind-watcher.cn/dd3010cf57ee5ae139c84e69c665bf5d' })
+  @MaxLength(100, { message: '头像地址不得大于 100 个字符' })
+  avatars?: string
 }
 
 export class TextOnlyDto {

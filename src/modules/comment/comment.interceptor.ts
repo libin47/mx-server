@@ -31,7 +31,7 @@ export class CommentFilterEmailInterceptor implements NestInterceptor {
             data?.data?.forEach((item: any, i: number) => {
               // mongoose model -> object
               data.data[i] = data.data[i].toObject?.() || data.data[i]
-              if (isDefined(item.mail)) {
+              if (!item.avatar && isDefined(item.mail)) {
                 data.data[i].avatar = getAvatar(item.mail)
                 delete data.data[i].mail
               }
@@ -50,7 +50,7 @@ export class CommentFilterEmailInterceptor implements NestInterceptor {
           return cloneDeep(data)
         } catch (e) {
           if (isDev) {
-            console.error(e)
+            console.error('e:', e)
           }
           return cloneDeep(data)
         }

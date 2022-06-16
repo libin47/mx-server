@@ -136,7 +136,6 @@ export class CommentController {
         { ...body, ...ipLocation },
         isMaster ? '' : ipLocation.ip,
       )
-
     const comment = await this.commentService.createComment(id, model, ref)
 
     process.nextTick(async () => {
@@ -246,12 +245,14 @@ export class CommentController {
     @IpLocation() ipLocation: IpRecord,
     @Query() query: CommentRefTypesDto,
   ) {
-    const { name, mail, url } = user
+    const { name, mail, url, avatar} = user
+    const avatars = avatar
     const model: CommentDto = {
       author: name,
       ...body,
       mail,
       url,
+      avatars,
       state: CommentState.Read,
     } as CommentDto
     return await this.comment(params, model as any, true, ipLocation, query)
