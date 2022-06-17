@@ -105,6 +105,7 @@ export class NoteController {
 
   @Get(':id')
   async getOneNote(
+    @IsMaster() isMaster: boolean,
     @Param() params: MongoIdDto,
     @Query() query: QAQueryDto,
   ) {
@@ -120,7 +121,7 @@ export class NoteController {
       throw new CannotFindException()
     }
     const QANice = await this.noteService.checkQAOK(current, answer)
-    if (!QANice) {
+    if (!QANice && !isMaster) {
       if(!answer){
         current.text = ''
         current["statcode"] = -1
@@ -286,7 +287,7 @@ export class NoteController {
     if (!id) {
       throw new CannotFindException()
     }
-    return await this.getOneNote({ id }, query)
+    return await this.getOneNote(isMaster, { id }, query)
   }
 
   @ApiOperation({ summary: '根据 nid 修改' })
