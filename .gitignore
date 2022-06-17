@@ -48,6 +48,6 @@ scripts/workflow/data
 
 schema.gql
 
-app.config.js
+# app.config.js
 
 webpack-dist
