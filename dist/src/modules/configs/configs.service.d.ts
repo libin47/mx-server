@@ -1,0 +1,33 @@
+import { ValidatorOptions } from 'class-validator';
+import { LeanDocument } from 'mongoose';
+import { ValidationPipe } from '@nestjs/common';
+import { DocumentType, ReturnModelType } from '@typegoose/typegoose';
+import { BeAnObject } from '@typegoose/typegoose/lib/types';
+import { CacheService } from '~/processors/cache/cache.service';
+import { EventManagerService } from '~/processors/helper/helper.event.service';
+import * as optionDtos from '../configs/configs.dto';
+import { UserModel } from '../user/user.model';
+import { UserService } from '../user/user.service';
+import { IConfig } from './configs.interface';
+import { OptionModel } from './configs.model';
+export declare class ConfigsService {
+    private readonly optionModel;
+    private readonly userService;
+    private readonly redis;
+    private readonly eventManager;
+    private logger;
+    constructor(optionModel: ReturnModelType<typeof OptionModel>, userService: UserService, redis: CacheService, eventManager: EventManagerService);
+    private configInitd;
+    private setConfig;
+    waitForConfigReady(): Promise<Readonly<IConfig>>;
+    get defaultConfig(): IConfig;
+    protected configInit(): Promise<void>;
+    get<T extends keyof IConfig>(key: T): Promise<Readonly<IConfig[T]>>;
+    getConfig(): Promise<Readonly<IConfig>>;
+    patch<T extends keyof IConfig>(key: T, data: Partial<IConfig[T]>): Promise<IConfig[T]>;
+    validOptions: ValidatorOptions;
+    validate: ValidationPipe;
+    patchAndValid<T extends keyof IConfig>(key: T, value: Partial<IConfig[T]>): Promise<Required<optionDtos.MailOptionsDto> | Required<optionDtos.AlgoliaSearchOptionsDto> | IConfig[T]>;
+    private validWithDto;
+    get getMaster(): () => Promise<LeanDocument<DocumentType<UserModel, BeAnObject>>>;
+}

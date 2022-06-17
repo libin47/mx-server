@@ -1,0 +1,9 @@
+export declare const HOME: string;
+export declare const TEMP_DIR: string;
+export declare const DATA_DIR: string;
+export declare const USER_ASSET_DIR: string;
+export declare const LOG_DIR: string;
+export declare const STATIC_FILE_DIR: string;
+export declare const BACKUP_DIR: string;
+export declare const LOCAL_ADMIN_ASSET_PATH: string;
+export declare const NODE_REQUIRE_PATH: string;

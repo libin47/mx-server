@@ -1,0 +1,37 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EventTypes = void 0;
+var EventTypes;
+(function (EventTypes) {
+    EventTypes["GATEWAY_CONNECT"] = "GATEWAY_CONNECT";
+    EventTypes["GATEWAY_DISCONNECT"] = "GATEWAY_DISCONNECT";
+    EventTypes["VISITOR_ONLINE"] = "VISITOR_ONLINE";
+    EventTypes["VISITOR_OFFLINE"] = "VISITOR_OFFLINE";
+    EventTypes["AUTH_FAILED"] = "AUTH_FAILED";
+    EventTypes["COMMENT_CREATE"] = "COMMENT_CREATE";
+    EventTypes["POST_CREATE"] = "POST_CREATE";
+    EventTypes["POST_UPDATE"] = "POST_UPDATE";
+    EventTypes["POST_DELETE"] = "POST_DELETE";
+    EventTypes["PHOTO_CREATE"] = "PHOTO_CREATE";
+    EventTypes["PHOTO_UPDATE"] = "PHOTO_UPDATE";
+    EventTypes["PHOTO_DELETE"] = "PHOTO_DELETE";
+    EventTypes["NOTE_CREATE"] = "NOTE_CREATE";
+    EventTypes["NOTE_UPDATE"] = "NOTE_UPDATE";
+    EventTypes["NOTE_DELETE"] = "NOTE_DELETE";
+    EventTypes["PAGE_UPDATED"] = "PAGE_UPDATED";
+    EventTypes["SAY_CREATE"] = "SAY_CREATE";
+    EventTypes["SAY_DELETE"] = "SAY_DELETE";
+    EventTypes["SAY_UPDATE"] = "SAY_UPDATE";
+    EventTypes["LINK_APPLY"] = "LINK_APPLY";
+    EventTypes["DANMAKU_CREATE"] = "DANMAKU_CREATE";
+    EventTypes["RECENTLY_CREATE"] = "RECENTLY_CREATE";
+    EventTypes["RECENTLY_DElETE"] = "RECENTLY_DElETE";
+    EventTypes["CONTENT_REFRESH"] = "CONTENT_REFRESH";
+    EventTypes["IMAGE_REFRESH"] = "IMAGE_REFRESH";
+    EventTypes["IMAGE_FETCH"] = "IMAGE_FETCH";
+    EventTypes["ADMIN_NOTIFICATION"] = "ADMIN_NOTIFICATION";
+    EventTypes["STDOUT"] = "STDOUT";
+    EventTypes["PTY"] = "pty";
+    EventTypes["PTY_MESSAGE"] = "pty_message";
+})(EventTypes = exports.EventTypes || (exports.EventTypes = {}));
+//# sourceMappingURL=events.types.js.map

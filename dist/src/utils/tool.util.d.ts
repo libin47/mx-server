@@ -1,0 +1,12 @@
+export declare const md5: (text: string) => string;
+export declare function getAvatar(mail: string | undefined): string;
+export declare function sleep(ms: number): Promise<unknown>;
+export declare function hasChinese(str: string): boolean;
+export declare function deleteKeys<T extends KV>(target: T, keys: (keyof T)[]): Partial<T>;
+export declare function deleteKeys<T extends KV>(target: T, keys: readonly (keyof T)[]): Partial<T>;
+export declare function deleteKeys<T extends KV>(target: T, ...keys: string[]): Partial<T>;
+export declare const safeJSONParse: (p: any) => any;
+export declare const safePathJoin: (...path: string[]) => string;
+export declare const deepCloneWithFunction: <T extends object>(object: T) => T;
+export declare const hashString: (str: any, seed?: number) => number;
+export declare function asyncPool<T = any>(concurrency: number, iterable: T[], iteratorFn: (item: T, arr: T[]) => any): AsyncGenerator<any, void, unknown>;

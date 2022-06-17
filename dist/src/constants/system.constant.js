@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DB_MODEL_TOKEN_SUFFIX = exports.DB_CONNECTION_TOKEN = exports.SCHEDULE_CRON_OPTIONS = exports.RESPONSE_PASSTHROUGH_METADATA = exports.REFLECTOR = exports.HTTP_ADAPTER_HOST = void 0;
+exports.HTTP_ADAPTER_HOST = 'HttpAdapterHost';
+exports.REFLECTOR = 'Reflector';
+exports.RESPONSE_PASSTHROUGH_METADATA = '__responsePassthrough__';
+var schedule_constants_1 = require("@nestjs/schedule/dist/schedule.constants");
+Object.defineProperty(exports, "SCHEDULE_CRON_OPTIONS", { enumerable: true, get: function () { return schedule_constants_1.SCHEDULE_CRON_OPTIONS; } });
+exports.DB_CONNECTION_TOKEN = '__db_connection_token__';
+exports.DB_MODEL_TOKEN_SUFFIX = '__db_model_token_suffix__';

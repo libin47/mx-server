@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HTTP_IDEMPOTENCE_KEY = exports.HTTP_IDEMPOTENCE_OPTIONS = exports.CRON_DESCRIPTION = exports.HTTP_RES_UPDATE_DOC_COUNT_TYPE = exports.HTTP_RES_TRANSFORM_PAGINATE = exports.HTTP_REQUEST_TIME = exports.HTTP_CACHE_DISABLE = exports.HTTP_CACHE_TTL_METADATA = exports.HTTP_CACHE_KEY_METADATA = void 0;
+var cache_constants_1 = require("@nestjs/common/cache/cache.constants");
+Object.defineProperty(exports, "HTTP_CACHE_KEY_METADATA", { enumerable: true, get: function () { return cache_constants_1.CACHE_KEY_METADATA; } });
+Object.defineProperty(exports, "HTTP_CACHE_TTL_METADATA", { enumerable: true, get: function () { return cache_constants_1.CACHE_TTL_METADATA; } });
+exports.HTTP_CACHE_DISABLE = 'cache_module:cache_disable';
+exports.HTTP_REQUEST_TIME = 'http:req_time';
+exports.HTTP_RES_TRANSFORM_PAGINATE = '__customHttpResTransformPagenate__';
+exports.HTTP_RES_UPDATE_DOC_COUNT_TYPE = '__updateDocCount__';
+exports.CRON_DESCRIPTION = '__cron:description__';
+exports.HTTP_IDEMPOTENCE_OPTIONS = '__idempotence_options__';
+exports.HTTP_IDEMPOTENCE_KEY = '__idempotence_key__';
